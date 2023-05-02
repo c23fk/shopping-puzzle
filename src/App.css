@@ -1,0 +1,18 @@
+li{
+  font-size: 40px;
+  list-style-type: none;
+  font-family:Snell Roundhand, cursive;
+}
+input{
+  font-size: 40px;
+  background-color: burlywood;
+  font-family:Snell Roundhand, cursive;
+}
+body{
+  background-color: burlywood;
+  text-align: center;
+}
+h1{
+  font-size: 60px;
+  font-family:Snell Roundhand, cursive;
+}
