@@ -6,42 +6,60 @@ class App extends Component{
     "beef": "Replace1",
     "cabbage": "Replace2",
   }
-
-  autoCorrect(e){
-    
-    let input = e.target.value.toLowerCase();
-    if (this.codes[input]){
-      e.target.value = this.codes[input];
-      e.target.style.backgroundColor = "green";
-      e.target.style.color = "black"
-      e.target.disabled = true;
-      delete this.codes[input];
-      let x = document.querySelectorAll("input");
-      for(let i = 0; i < x.length; i++){
-        if(!x[i].disabled){
-          x[i].focus();
-          break;
-        }
+  autoCorrect(){
+    let selectors = document.querySelectorAll("input");
+    let seenWords = [];
+    let count = 0
+    for(let i = 0; i < selectors.length; i++){
+      let inp = selectors[i].value.toLowerCase();
+      if(this.codes[inp] && !seenWords.includes(inp)){
+        seenWords.push(inp);
+        count++
+        
       }
     }
+    if(Object.keys(this.codes).length === count){
+      alert("Order Confirmed")
+      for(let i = 0; i < selectors.length; i++){
+        let inp = selectors[i].value.toLowerCase();
+        if(this.codes[inp]){
+          selectors[i].value = this.codes[inp];
+          selectors[i].style.color = "black"
+          selectors[i].disabled = true;
+          delete this.codes[inp];
+          console.log(selectors[i])
+          document.getElementById("submit").disabled = true;
+        }
+      }
+    }else {
+      alert("That's not what I wanted!")
+      for(let i = 0; i < selectors.length; i++){
+        selectors[i].value = "";
+      }
+    }
+    
   }
   render(){
   return (
     <div className="App">
       <ul>
       <h1>Shopping list</h1>
-        <li>Tomatos</li>
-        <li>Onions</li>
-        <li>Potatos</li>
+        <li>Tomatoes</li>
         <li>Chicken</li>
         <li>Eggs</li>
+        <li>Ice Cream</li>
+        <li>Red Herring</li>
+        <li>Deconstructed Eggplant Parmigiana</li>
         <li>
-          <input autoFocus onInput = {(e) => this.autoCorrect(e)} className = {"in"}></input>
+          <input autoFocus className = {"in"}></input>
         </li>
         <li>
-          <input onInput = {(e) => this.autoCorrect(e)} className = {"in"}></input>
+          <input className = {"in"}></input>
         </li>
       </ul>
+      <button id = {"submit"} onClick={() => this.autoCorrect()}>
+        Confirm Order
+      </button>
     </div>
   );
   }
