@@ -1,7 +1,47 @@
 import { Component } from 'react';
 import './App.css';
 
+const sound = new Audio("nope.mp3");
+
 class App extends Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      locked: true,
+    }
+  }
+  setLocked(bool){
+    this.setState({locked: bool})
+  }
+
+  fail(){
+    this.setLocked(true);
+    
+    sound.play();
+  }
+
+  render(){
+    return (
+      <div className="App">
+        {this.state.locked? <LockScreen click = {()=>this.setLocked(false)}/>:<ShoppingList fail = {()=>this.fail()}/>}
+      </div>
+    )
+  }
+}
+
+class LockScreen extends Component{
+  render(){
+    return (
+      <div>
+        <h1>Locked</h1>
+        <button onClick={() => this.props.click()}>Unlock</button>
+      </div>
+    )
+  }
+}
+
+
+class ShoppingList extends Component{
   codes = {
     "beef": "Replace1",
     "cabbage": "Replace2",
@@ -36,6 +76,7 @@ class App extends Component{
       for(let i = 0; i < selectors.length; i++){
         selectors[i].value = "";
       }
+      this.props.fail();
     }
     
   }
@@ -56,10 +97,11 @@ class App extends Component{
         <li>
           <input className = {"in"}></input>
         </li>
-      </ul>
-      <button id = {"submit"} onClick={() => this.autoCorrect()}>
-        Confirm Order
+        <button id = {"submit"} onClick={() => this.autoCorrect()}>
+        Order
       </button>
+      </ul>
+
     </div>
   );
   }
